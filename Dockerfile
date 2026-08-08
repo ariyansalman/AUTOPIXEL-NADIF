@@ -7,8 +7,6 @@ ENV PYTHONUNBUFFERED=1 \
     SE_OFFLINE=true \
     DISPLAY=:99
 
-# Chromium + matching Debian chromedriver + Xvfb for Railway's Linux container.
-# xauth is required by xvfb-run when it creates the temporary X authority file.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium \
     chromium-driver \
@@ -45,5 +43,5 @@ RUN chromium --version \
     && xvfb-run --help >/dev/null \
     && python -c "import telegram, selenium, undetected_chromedriver, pyotp; print('Python dependencies OK')"
 
-# Run the bot inside a virtual X display so headless=False is usable on Railway.
-CMD ["xvfb-run", "--auto-servernum", "--server-args=-screen 0 1280x900x24", "python", "main.py"]
+# Use a diagnostic entrypoint so Railway shows exactly where startup stops.
+ENTRYPOINT ["sh", "/app/start.sh"]
