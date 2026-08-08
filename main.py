@@ -34,9 +34,9 @@ from telegram.ext import (
 
 import config
 
-# Load the Google Authenticator fallback before handlers import
-# services.google_automation.start_login helpers. This keeps the existing
-# architecture and only patches the internal post-password challenge resolver.
+# Load compatibility layers before handlers import the Google automation
+# helpers. These only improve handling of the normal Google verification UI.
+import services.totp_compat  # noqa: F401,E402
 import services.google_auth_fallback  # noqa: F401,E402
 
 from handlers import (
